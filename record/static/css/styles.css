@@ -1,3 +1,6 @@
-.align-buttons {
+.align-button-left {
+    text-align: left;
+}
+.align-buttons-right {
     text-align: right;
 }
