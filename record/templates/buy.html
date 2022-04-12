@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %} Buy {% endblock %}
+{% block content %}
+    <h2>Buy</h2>
+        <form action="/buy" method="post">
+            {{ jinja_form.hidden_tag() }}
+            <div class="grid">
+                {{ jinja_form.currency_from.label() }}
+                {{ jinja_form.currency_from }}
+                {{ jinja_form.currency_to.label() }} 
+                {{ jinja_form.currency_to }}
+            </div>
+            <div class="grid">                                                     
+                {{ jinja_form.amount_from.label() }}
+                {{ jinja_form.amount_from }}                                                     
+                <input type="submit" value="Calculate" class="outline">                        
+            </div> 
+            <div class="grid">
+                <label for="amount to buy">
+                    Amount to buy:
+                    <input type="text" value="Readonly" readonly>
+                </label>
+                <label for="unit price">
+                    Unit price:
+                    <input type="text" value="Readonly" readonly>
+                </label>                        
+            </div> 
+            <div class="grid">
+                <p class="align-buttons-left">
+                    <a href="/" role="button" class="secondary">Cancel</a>
+                </p>
+                <p class="align-buttons-right">
+                    {{ jinja_form.submit() }}
+                </p>
+            </div>                                                                                  
+        </form>
+{% endblock %}
