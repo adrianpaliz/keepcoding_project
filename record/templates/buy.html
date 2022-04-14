@@ -4,17 +4,25 @@
     <h2>Buy</h2>
         <form action="/buy" method="post">
             {{ jinja_form.hidden_tag() }}
+            
+            <p hidden>
+            {{ jinja_form.day }}
+            {{ jinja_form.hour }}
+            </p>
+
             <div class="grid">
                 {{ jinja_form.currency_from.label() }}
                 {{ jinja_form.currency_from }}
                 {{ jinja_form.currency_to.label() }} 
                 {{ jinja_form.currency_to }}
             </div>
+
             <div class="grid">                                                     
                 {{ jinja_form.amount_from.label() }}
                 {{ jinja_form.amount_from }}                                                     
                 <input type="submit" value="Calculate" class="outline">                        
-            </div> 
+            </div>
+
             <div class="grid">
                 <label for="amount to buy">
                     Amount to buy:
@@ -25,6 +33,7 @@
                     <input type="text" value="Readonly" readonly>
                 </label>                        
             </div> 
+
             <div class="grid">
                 <p class="align-buttons-left">
                     <a href="/" role="button" class="secondary">Cancel</a>
@@ -32,6 +41,7 @@
                 <p class="align-buttons-right">
                     {{ jinja_form.submit() }}
                 </p>
-            </div>                                                                                  
+            </div>   
+                                                                                           
         </form>
 {% endblock %}
