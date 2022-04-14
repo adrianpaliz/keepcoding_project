@@ -8,12 +8,8 @@ currencies_names = app.config["CURRENCIES"]
 
 
 class PurchaseForm(FlaskForm):
-    day = DateField(
-        label=None, validators=None, format="%d-%m-%Y", default=datetime.now
-    )
-    hour = TimeField(
-        label=None, validators=None, format="%H:%M:%S", default=datetime.now
-    )
+    day = datetime.now().date()
+    hour = datetime.now().time()
     currency_from = SelectField(
         "Currency form", validators=[DataRequired()], choices=currencies_names
     )
@@ -24,8 +20,8 @@ class PurchaseForm(FlaskForm):
         "Amount to invest",
         validators=[DataRequired(), NumberRange(message="Must be a positive", min=1)],
     )
-    # Remplace with api call
+    # Replace with api call
     amount_to = 34
-    # Remplace with math operation
+    # Replace with math operation
     unit_price = 1030
     submit = SubmitField("Submit")
