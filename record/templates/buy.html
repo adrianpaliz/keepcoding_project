@@ -5,11 +5,10 @@
         <form action="/buy" method="post">
             {{ jinja_form.hidden_tag() }}
             
-            <p hidden>
-            {{ jinja_form.day }}
-            {{ jinja_form.hour }}
-            </p>
+            <input type="hidden" name="day" value={{ jinja_form.day }}>
 
+            <input type="hidden" name="hour" value={{ jinja_form.hour }}>  
+            
             <div class="grid">
                 {{ jinja_form.currency_from.label() }}
                 {{ jinja_form.currency_from }}
@@ -24,14 +23,10 @@
             </div>
 
             <div class="grid">
-                <label for="amount to buy">
-                    Amount to buy:
-                    <input type="text" value="Readonly" readonly>
-                </label>
-                <label for="unit price">
-                    Unit price:
-                    <input type="text" value="Readonly" readonly>
-                </label>                        
+                {{ jinja_form.amount_to.label() }}
+                {{ jinja_form.amount_to }}
+                
+                {{ jinja_form.unit_price }}          
             </div> 
 
             <div class="grid">
