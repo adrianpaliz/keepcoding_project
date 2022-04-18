@@ -25,8 +25,8 @@
             <div class="grid">
                 {{ jinja_form.amount_to.label() }}
                 {{ jinja_form.amount_to }}
-                
-                {{ jinja_form.unit_price }}          
+                {{ jinja_form.unit_price.label() }}
+                <input type="text" name="unit_price" value={{ jinja_form.unit_price.data }} readonly>   
             </div> 
 
             <div class="grid">
