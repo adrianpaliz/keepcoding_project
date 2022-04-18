@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %} Transactions {% endblock %}
+{% block content %}
+    <h2>Transactions</h2>
+    <table>
+        <tr>
+            <th>Day</th>
+            <th>Hour</th>
+            <th>Currency from</th>
+            <th>Amount from</th>
+            <th>Currency to</th>
+            <th>Amount to</th>
+            <th>Unit price</th>
+        </tr>
+            {% for movement in movements %}
+                <tr>
+                    <td>{{ movement.day }}</td>
+                    <td>{{ movement.hour }}</td>
+                    <td>{{ movement.currency_from }}</td>
+                    <td>{{ movement.amount_from }}</td>
+                    <td>{{ movement.currency_to }}</td>  
+                    <td>{{ movement.amount_to }}</td>
+                    <td>{{ movement.unit_price }}</td>
+                </tr>
+            {% endfor %}
+    </table>
+        <div class="grid">
+            <p class="align-buttons-left">
+                <a href="/status" role="button" class="secondary outline">Status</a>
+            </p>
+            <p class="align-buttons-right">
+                <a href="/buy" role="button" class="secondary outline">Buy</a>
+            </p>
+        </div>                                        
+{% endblock %}
