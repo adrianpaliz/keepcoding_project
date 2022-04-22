@@ -12,17 +12,21 @@
             <th>Amount to</th>
             <th>Unit price</th>
         </tr>
-            {% for movement in movements %}
-                <tr>
-                    <td>{{ movement.day }}</td>
-                    <td>{{ movement.hour }}</td>
-                    <td>{{ movement.currency_from }}</td>
-                    <td>{{ movement.amount_from }}</td>
-                    <td>{{ movement.currency_to }}</td>  
-                    <td>{{ movement.amount_to }}</td>
-                    <td>{{ movement.unit_price }}</td>
-                </tr>
-            {% endfor %}
+            {% if movements %}
+                {% for movement in movements %}
+                    <tr>
+                        <td>{{ movement.day }}</td>
+                        <td>{{ movement.hour }}</td>
+                        <td>{{ movement.currency_from }}</td>
+                        <td>{{ movement.amount_from }}</td>
+                        <td>{{ movement.currency_to }}</td>  
+                        <td>{{ movement.amount_to }}</td>
+                        <td>{{ movement.unit_price }}</td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+            <h4 style="text-align:center">There are no movements yet</h4>
+            {% endif %}
     </table>
         <div class="grid">
             <p class="align-buttons-left">
