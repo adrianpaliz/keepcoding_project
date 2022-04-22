@@ -3,3 +3,4 @@ virtual_environment
 .env
 config.py
 .vscode
+database/movements.db
