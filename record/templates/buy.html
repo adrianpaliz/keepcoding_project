@@ -11,22 +11,30 @@
             
             <div class="grid">
                 {{ jinja_form.currency_from.label() }}
-                {{ jinja_form.currency_from }}
+                {{ jinja_form.currency_from }}                          
+
                 {{ jinja_form.currency_to.label() }} 
                 {{ jinja_form.currency_to }}
             </div>
 
             <div class="grid">                                                     
                 {{ jinja_form.amount_from.label() }}
-                {{ jinja_form.amount_from }}                                                     
-                <input type="submit" value="Calculate" class="outline">                        
+                {{ jinja_form.amount_from }}  
+                {{ jinja_form.calculate()}}                                         
             </div>
 
             <div class="grid">
                 {{ jinja_form.amount_to.label() }}
-                {{ jinja_form.amount_to }}
+                <input type="text" 
+                    name="amount_to" 
+                    value="{{ jinja_form.amount_to.data or '' }}"
+                    readonly>
+
                 {{ jinja_form.unit_price.label() }}
-                <input type="text" name="unit_price" value={{ jinja_form.unit_price.data }} readonly>   
+                <input type="text" 
+                    name="unit_price" 
+                    value="{{ jinja_form.unit_price.data or '' }}"
+                    readonly>
             </div> 
 
             <div class="grid">
@@ -36,7 +44,6 @@
                 <p class="align-buttons-right">
                     {{ jinja_form.submit() }}
                 </p>
-            </div>   
-                                                                                           
+            </div>                                                                                           
         </form>
 {% endblock %}
