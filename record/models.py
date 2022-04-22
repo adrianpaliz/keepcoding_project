@@ -42,7 +42,7 @@ class ProcessData:
     def recover_data(self):
         return self.make_a_query(
             """
-            SELECT day, hour, currency_from, amount_from, currency_to, amount_to, id
+            SELECT day, hour, currency_from, currency_to, amount_from, amount_to, unit_price
             FROM movements
             ORDER BY day
             """
@@ -51,23 +51,25 @@ class ProcessData:
     def update_data(self, params):
         self.make_a_query(
             """
-            UPDATE movements set day = ?, hour = ?, currency_from = ?, amount_from = ?, currency_to = ?, amount_to = ? 
-            WHERE id = ?
+            INSERT INTO movements (day, hour, currency_from, currency_to, amount_from, amount_to, unit_price)
+                values(?, ?, ?, ?, ?, ?, ?) 
             """,
-            (params),
+            params,
         )
 
 
 class APIRequest:
-    def __init__(self, currency_from="", currency_to=""):
+    def __init__(self, currency_from="", currency_to="", rate_time=""):
         self.currency_from = currency_from
         self.currency_to = currency_to
-        self.rate = 0.0
+        self.rate_time = rate_time
 
     def get_rate(self):
         self.rate_request = requests.get(
-            URL_SPECIFIC_RATE.format(self.currency_from, self.currency_to, API_KEY)
+            URL_SPECIFIC_RATE.format(
+                self.currency_from, self.currency_to, self.rate_time, API_KEY
+            )
         )
         # if self.rate_request.status_code != 200:
         #    raise APIError(self.rate_request.json()["error"])
-        self.rate = round(self.rate_request.json()["rate"], 2)
+        return self.rate_request.json()["rate"]
