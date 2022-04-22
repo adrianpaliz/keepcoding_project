@@ -1,6 +1,6 @@
 from record import app
 from flask_wtf import FlaskForm
-from wtforms import HiddenField, SelectField, FloatField, SubmitField
+from wtforms import SelectField, FloatField, SubmitField
 from wtforms.validators import DataRequired, NumberRange
 from datetime import datetime
 
@@ -9,8 +9,9 @@ currencies_names = app.config["CURRENCIES"]
 
 class PurchaseForm(FlaskForm):
     day = datetime.now().date()
+
     hour = datetime.now().time().isoformat()[:-3]
-    
+
     currency_from = SelectField(
         "Currency form", validators=[DataRequired()], choices=currencies_names
     )
@@ -23,9 +24,12 @@ class PurchaseForm(FlaskForm):
     )
     amount_to = FloatField(
         "Amount to buy"
-    )    
+    )
     unit_price = FloatField(
         "Unit price"
+    )
+    calculate = SubmitField(
+        "Calculate"
     )
     submit = SubmitField(
         "Submit"
