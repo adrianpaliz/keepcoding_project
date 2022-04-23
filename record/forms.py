@@ -22,15 +22,7 @@ class PurchaseForm(FlaskForm):
         "Amount to invest",
         validators=[DataRequired(), NumberRange(message="Must be a positive", min=1)],
     )
-    amount_to = FloatField(
-        "Amount to buy"
-    )
-    unit_price = FloatField(
-        "Unit price"
-    )
-    calculate = SubmitField(
-        "Calculate"
-    )
-    submit = SubmitField(
-        "Submit"
-    )
+    amount_to = FloatField("Amount to buy")
+    unit_price = FloatField("Unit price")
+    calculate = SubmitField("Calculate")
+    submit = SubmitField("Submit")

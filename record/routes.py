@@ -22,41 +22,42 @@ def buy():
     if request.method == "GET":
         return render_template("buy.html", jinja_form=instantiated_form, navbar="Buy")
 
-    elif request.method == "POST" and instantiated_form.calculate.data == True:
-        currency_from = request.form["currency_from"]
-        currency_to = request.form["currency_to"]
-        day = request.form["day"]
+    elif request.method == "POST":
 
-        hour = request.form["hour"]
+        if instantiated_form.calculate.data == True:
+            currency_from = request.form["currency_from"]
+            currency_to = request.form["currency_to"]
+            day = request.form["day"]
 
-        str_rate_time = day + "T" + hour
+            hour = request.form["hour"]
 
-        form_api_request = APIRequest(currency_from, currency_to, str_rate_time)
-        rate = form_api_request.get_rate()
-        instantiated_form = PurchaseForm()
-        instantiated_form.unit_price.data = rate
+            str_rate_time = day + "T" + hour
 
-        amount_to_invest = instantiated_form.amount_from.data
-        instantiated_form.amount_to.data = rate * amount_to_invest
+            form_api_request = APIRequest(currency_from, currency_to, str_rate_time)
+            rate = form_api_request.get_rate()
+            instantiated_form = PurchaseForm()
+            instantiated_form.unit_price.data = rate
 
-        instantiated_form.currency_from.render_kw = {"disabled": "disabled"}
-        instantiated_form.currency_to.render_kw = {"disabled": "disabled"}
-        instantiated_form.amount_from.render_kw = {"disabled": "disabled"}
+            amount_to_invest = instantiated_form.amount_from.data
+            instantiated_form.amount_to.data = rate * amount_to_invest
 
-        return render_template("buy.html", jinja_form=instantiated_form, navbar="Buy")
+            return render_template(
+                "buy.html", jinja_form=instantiated_form, navbar="Buy"
+            )
 
-    elif request.method == "POST" and instantiated_form.submit.data == True:
-        params = (
-            str(instantiated_form.day.strftime("%d/%m/%Y")),
-            str(instantiated_form.hour),
-            str(instantiated_form.currency_from.data),
-            str(instantiated_form.currency_to.data),
-            str(instantiated_form.amount_from.data),
-            str(instantiated_form.amount_to.data),
-            str(instantiated_form.unit_price.data),
-        )
-        data_manager.update_data(params)
-        return redirect(url_for("home"))
+        elif instantiated_form.submit.data == True:
+
+            params = (
+                str(instantiated_form.day.strftime("%d/%m/%Y")),
+                str(instantiated_form.hour),
+                str(instantiated_form.currency_from.data),
+                str(instantiated_form.currency_to.data),
+                str(instantiated_form.amount_from.data),
+                str(instantiated_form.amount_to.data),
+                str(instantiated_form.unit_price.data),
+            )
+            data_manager.update_data(params)
+            return redirect(url_for("home"))
 
     else:
         raise Exception("Request method unknown")
