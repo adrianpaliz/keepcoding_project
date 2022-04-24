@@ -28,4 +28,4 @@ Adrián Páliz
 
 ## Acknowledgements
 
-- Thanks to: my father, my sisters and special appreciation to my beloved girlfriend, who is supporting me strongly me since I decided to take up this journey, for encouraging me to carry on and overcome many obstacles in order to reach my goal :smiling_face_with_tear: . 
+- Thanks to: my father, my sisters and special appreciation to my beloved girlfriend, who is supporting me strongly since I decided to take up this journey, for encouraging me to carry on and overcome many obstacles in order to reach my goal :smiling_face_with_tear: . 
