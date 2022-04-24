@@ -13,7 +13,7 @@ class PurchaseForm(FlaskForm):
     hour = datetime.now().time().isoformat()[:-3]
 
     currency_from = SelectField(
-        "Currency form", validators=[DataRequired()], choices=currencies_names
+        "Currency from", validators=[DataRequired()], choices=currencies_names
     )
     currency_to = SelectField(
         "Currency to", validators=[DataRequired()], choices=currencies_names

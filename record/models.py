@@ -1,5 +1,5 @@
 import sqlite3, requests
-from config import API_KEY, URL_SPECIFIC_RATE
+from config import API_KEY, URL_SPECIFIC_RATE, CURRENCIES
 from record.errors import APIError
 
 
@@ -56,6 +56,27 @@ class ProcessData:
             """,
             params,
         )
+
+    def recover_all_transaction(self):
+        return self.make_a_query(
+            """
+            SELECT * FROM movements
+            """
+        )
+
+    def get_wallet(self):
+        wallet = {}
+        for code in CURRENCIES:
+            wallet[code] = 0
+
+        data = self.recover_all_transaction()
+
+        for row in data:
+            if row["currency_from"] in wallet:
+                wallet[row["currency_from"]] -= row["amount_from"]
+            if row["currency_to"] in wallet:
+                wallet[row["currency_to"]] += row["amount_to"]
+        return wallet
 
 
 class APIRequest:

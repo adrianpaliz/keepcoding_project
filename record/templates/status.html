@@ -3,13 +3,13 @@
 {% block content %}
     <h2>Status</h2>
     <div>
-        <label for="amount to buy">
-            Amount to buy:
-            <input type="text" value="data" readonly>
+        <label>
+            Investment euros:
+            <input type="text" value="{{ eur_investment }}" readonly>
         </label>
-        <label for="unit price">
-            Unit price:
-            <input type="text" value="data" readonly>
+        <label>
+            Current cypto value:
+            <input type="text" value="{{ crypto_value }}" readonly>
         </label>                        
     </div> 
 {% endblock %}

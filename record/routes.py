@@ -1,11 +1,14 @@
-from flask import redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, request, url_for
 from record import app
 from record.models import ProcessData
 from record.forms import PurchaseForm
 from record.models import APIRequest
-import sqlite3
+
 
 database_path = app.config["DATABASE_PATH"]
+cryptocurrencies = app.config["CRYPTOCURRENCIES"]
+
+
 data_manager = ProcessData(database_path)
 
 
@@ -25,28 +28,54 @@ def buy():
     elif request.method == "POST":
 
         if instantiated_form.calculate.data == True:
+
             currency_from = request.form["currency_from"]
             currency_to = request.form["currency_to"]
-            day = request.form["day"]
 
-            hour = request.form["hour"]
+            wallet = data_manager.get_wallet()
 
-            str_rate_time = day + "T" + hour
+            if (
+                instantiated_form.currency_from.data
+                == instantiated_form.currency_to.data
+            ):
+                flash("You cannot buy one currency with the same currency.")
+                return render_template(
+                    "buy.html", jinja_form=instantiated_form, navbar="Buy"
+                )
 
-            form_api_request = APIRequest(currency_from, currency_to, str_rate_time)
-            rate = form_api_request.get_rate()
-            instantiated_form = PurchaseForm()
-            instantiated_form.unit_price.data = rate
+            elif (
+                instantiated_form.currency_from.data in cryptocurrencies
+                and instantiated_form.amount_from.data
+                > wallet[instantiated_form.currency_from.data]
+            ):
+                flash(
+                    "You don't have that amount of "
+                    + instantiated_form.currency_from.data
+                )
+                return render_template(
+                    "buy.html", jinja_form=instantiated_form, navbar="Buy"
+                )
 
-            amount_to_invest = instantiated_form.amount_from.data
-            instantiated_form.amount_to.data = rate * amount_to_invest
+            else:
+                day = request.form["day"]
 
-            return render_template(
-                "buy.html", jinja_form=instantiated_form, navbar="Buy"
-            )
+                hour = request.form["hour"]
+
+                str_rate_time = day + "T" + hour
+
+                form_api_request = APIRequest(currency_from, currency_to, str_rate_time)
+                rate = form_api_request.get_rate()
+                instantiated_form = PurchaseForm()
+                instantiated_form.unit_price.data = rate
+
+                amount_to_invest = instantiated_form.amount_from.data
+                instantiated_form.amount_to.data = rate * amount_to_invest
+
+                return render_template(
+                    "buy.html", jinja_form=instantiated_form, navbar="Buy"
+                )
 
         elif instantiated_form.submit.data == True:
-
             params = (
                 str(instantiated_form.day.strftime("%d/%m/%Y")),
                 str(instantiated_form.hour),
@@ -58,7 +87,6 @@ def buy():
             )
             data_manager.update_data(params)
             return redirect(url_for("home"))
-
     else:
         raise Exception("Request method unknown")
 
@@ -66,9 +94,11 @@ def buy():
 @app.route("/status")
 def status():
 
-    con = sqlite3.connect()
-    cur = con.cursor()
+    wallet = data_manager.get_wallet()
 
-    con.close()
-
-    return render_template("status.html", navbar="Status")
+    return render_template(
+        "status.html",
+        navbar="Status",
+        eur_investment=abs(wallet["EUR"]),
+        crypto_value=0,
+    )
