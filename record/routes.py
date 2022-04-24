@@ -3,6 +3,7 @@ from record import app
 from record.models import ProcessData
 from record.forms import PurchaseForm
 from record.models import APIRequest
+from datetime import datetime
 
 
 database_path = app.config["DATABASE_PATH"]
@@ -96,9 +97,19 @@ def status():
 
     wallet = data_manager.get_wallet()
 
+    day = str(datetime.now().date())
+    hour = datetime.now().time().isoformat()[:-3]
+    str_rate_time = day + "T" + hour
+
+    crypto_total_value_eur = 0
+    for crypto in cryptocurrencies:
+        form_api_request = APIRequest(crypto, "EUR", str_rate_time)
+        rate = form_api_request.get_rate()
+        crypto_total_value_eur += rate * wallet[crypto]
+
     return render_template(
         "status.html",
         navbar="Status",
         eur_investment=abs(wallet["EUR"]),
-        crypto_value=0,
+        crypto_value=crypto_total_value_eur,
     )
