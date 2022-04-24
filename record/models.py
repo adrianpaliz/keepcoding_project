@@ -91,6 +91,6 @@ class APIRequest:
                 self.currency_from, self.currency_to, self.rate_time, API_KEY
             )
         )
-        # if self.rate_request.status_code != 200:
-        #    raise APIError(self.rate_request.json()["error"])
+        if self.rate_request.status_code != 200:
+           raise APIError(self.rate_request.json()["error"])
         return self.rate_request.json()["rate"]

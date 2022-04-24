@@ -4,6 +4,7 @@ from record.models import ProcessData
 from record.forms import PurchaseForm
 from record.models import APIRequest
 from datetime import datetime
+import sqlite3
 
 
 database_path = app.config["DATABASE_PATH"]
@@ -15,8 +16,12 @@ data_manager = ProcessData(database_path)
 
 @app.route("/")
 def home():
-    data = data_manager.recover_data()
-    return render_template("transactions.html", movements=data, navbar="Home")
+    try:
+        data = data_manager.recover_data()
+        return render_template("transactions.html", movements=data, navbar="Home")
+    except sqlite3.Error as error:
+        flash("Database error.")
+        return render_template("transactions.html", movements=[], navbar="Home")
 
 
 @app.route("/buy", methods=["GET", "POST"])
