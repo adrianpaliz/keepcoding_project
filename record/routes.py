@@ -28,10 +28,7 @@ def home():
 def buy():
     instantiated_form = PurchaseForm()
 
-    if request.method == "GET":
-        return render_template("buy.html", jinja_form=instantiated_form, navbar="Buy")
-
-    elif request.method == "POST":
+    if request.method == "POST":
 
         if instantiated_form.calculate.data == True:
 
@@ -93,8 +90,9 @@ def buy():
             )
             data_manager.update_data(params)
             return redirect(url_for("home"))
+
     else:
-        raise Exception("Request method unknown")
+        return render_template("buy.html", jinja_form=instantiated_form, navbar="Buy")
 
 
 @app.route("/status")
