@@ -35,7 +35,11 @@ def buy():
             currency_from = request.form["currency_from"]
             currency_to = request.form["currency_to"]
 
-            wallet = data_manager.get_wallet()
+            try:
+                wallet = data_manager.get_wallet()
+            except sqlite3.Error as error:
+                flash("Database error")
+                return redirect(url_for("buy"))
 
             if (
                 instantiated_form.currency_from.data
@@ -88,8 +92,12 @@ def buy():
                 str(instantiated_form.amount_to.data),
                 str(instantiated_form.unit_price.data),
             )
-            data_manager.update_data(params)
-            return redirect(url_for("home"))
+            try:
+                data_manager.update_data(params)
+                return redirect(url_for("buy"))
+            except sqlite3.Error as error:
+                flash("Database error.")
+                return render_template("buy.html", jinja_form=instantiated_form, navbar="Buy")
 
     else:
         return render_template("buy.html", jinja_form=instantiated_form, navbar="Buy")
