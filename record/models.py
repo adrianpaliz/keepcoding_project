@@ -85,12 +85,13 @@ class APIRequest:
         self.currency_to = currency_to
         self.rate_time = rate_time
 
-    def get_rate(self):
-        self.rate_request = requests.get(
+    def query_rate(self):
+
+        self.response =  requests.get(
             URL_SPECIFIC_RATE.format(
                 self.currency_from, self.currency_to, self.rate_time, API_KEY
-            )
-        )
-        if self.rate_request.status_code != 200:
-           raise APIError(self.rate_request.json()["error"])
-        return self.rate_request.json()["rate"]
+            ))
+        return self.response
+
+    def get_rate(self):
+        return self.response.json()['rate']
