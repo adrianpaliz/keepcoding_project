@@ -4,7 +4,7 @@ from record.models import ProcessData
 from record.forms import PurchaseForm
 from record.models import APIRequest
 from datetime import datetime
-import sqlite3
+import sqlite3, requests
 
 
 database_path = app.config["DATABASE_PATH"]
@@ -71,6 +71,28 @@ def buy():
                 str_rate_time = day + "T" + hour
 
                 form_api_request = APIRequest(currency_from, currency_to, str_rate_time)
+                response = form_api_request.query_rate()                
+
+                try:
+                    response.raise_for_status()
+                except requests.RequestException as error:
+                    if response.status_code == 400:
+                        flash("There is something wrong with your request")
+                    elif response.status_code == 401:
+                        flash("Your API key is wrong")
+                    elif response.status_code == 403:
+                        flash("Your API key doesnt't have enough privileges to access this resource")
+                    elif response.status_code == 429:
+                        flash("You have exceeded your API key rate limits")
+                    elif response.status_code == 550:
+                        flash("You requested specific single item that we don't have at this moment")
+                    else:
+                        print("{}, Unknow error code".format(response.status_code))
+
+                    return render_template(
+                    "buy.html", jinja_form=instantiated_form, navbar="Buy"
+                    )
+
                 rate = form_api_request.get_rate()
                 instantiated_form = PurchaseForm()
                 instantiated_form.unit_price.data = rate
