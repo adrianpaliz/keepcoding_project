@@ -1,6 +1,5 @@
 import sqlite3, requests
 from config import API_KEY, URL_SPECIFIC_RATE, CURRENCIES
-from record.errors import APIError
 
 
 class ProcessData:
