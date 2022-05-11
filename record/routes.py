@@ -29,7 +29,7 @@ def buy():
     instantiated_form = PurchaseForm()
 
     if request.method == "POST":
-
+                
         if instantiated_form.calculate.data == True:
 
             currency_from = request.form["currency_from"]
@@ -52,7 +52,7 @@ def buy():
 
             elif (
                 instantiated_form.currency_from.data in cryptocurrencies
-                and instantiated_form.amount_from.data
+                and instantiated_form.amount_from_hidden.data
                 > wallet[instantiated_form.currency_from.data]
             ):
                 flash(
@@ -98,7 +98,10 @@ def buy():
                 instantiated_form.unit_price.data = rate
 
                 amount_to_invest = instantiated_form.amount_from.data
+                amount_from_invest_hidden = instantiated_form.amount_from.data
+                                            
                 instantiated_form.amount_to.data = rate * amount_to_invest
+                instantiated_form.amount_from_hidden.data = request.form.getlist('amount_from_hidden')
 
                 return render_template(
                     "buy.html", jinja_form=instantiated_form, navbar="Buy"
@@ -110,8 +113,8 @@ def buy():
                 str(instantiated_form.hour),
                 str(instantiated_form.currency_from.data),
                 str(instantiated_form.currency_to.data),
-                str(instantiated_form.amount_from.data),
-                str(instantiated_form.amount_to.data),
+                str(instantiated_form.amount_from_hidden.data),
+                str(instantiated_form.amount_to_hidden.data),
                 str(instantiated_form.unit_price.data),
             )
             try:

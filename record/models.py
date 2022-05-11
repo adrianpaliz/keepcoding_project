@@ -41,7 +41,7 @@ class ProcessData:
     def recover_data(self):
         return self.make_a_query(
             """
-            SELECT day, hour, currency_from, currency_to, amount_from, amount_to, unit_price
+            SELECT day, hour, currency_from, currency_to, amount_from_hidden, amount_to_hidden, unit_price
             FROM movements
             ORDER BY day
             """
@@ -50,7 +50,7 @@ class ProcessData:
     def update_data(self, params):
         self.make_a_query(
             """
-            INSERT INTO movements (day, hour, currency_from, currency_to, amount_from, amount_to, unit_price)
+            INSERT INTO movements (day, hour, currency_from, currency_to, amount_from_hidden, amount_to_hidden, unit_price)
                 values(?, ?, ?, ?, ?, ?, ?) 
             """,
             params,
@@ -72,9 +72,9 @@ class ProcessData:
 
         for row in data:
             if row["currency_from"] in wallet:
-                wallet[row["currency_from"]] -= row["amount_from"]
+                wallet[row["currency_from"]] -= row["amount_from_hidden"]
             if row["currency_to"] in wallet:
-                wallet[row["currency_to"]] += row["amount_to"]
+                wallet[row["currency_to"]] += row["amount_to_hidden"]
         return wallet
 
 

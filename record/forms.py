@@ -1,6 +1,6 @@
 from record import app
 from flask_wtf import FlaskForm
-from wtforms import SelectField, FloatField, SubmitField
+from wtforms import SelectField, FloatField, SubmitField, HiddenField
 from wtforms.validators import DataRequired, NumberRange
 from datetime import datetime
 
@@ -22,8 +22,14 @@ class PurchaseForm(FlaskForm):
         "Amount to invest",
         validators=[DataRequired(), NumberRange(message="Must be a positive", min=1)],
     )
+    amount_from_hidden = HiddenField(
+        ""
+    )
     amount_to = FloatField(
         "Amount to buy"
+    )
+    amount_to_hidden= HiddenField(
+        ""
     )
     unit_price = FloatField(
         "Unit price"

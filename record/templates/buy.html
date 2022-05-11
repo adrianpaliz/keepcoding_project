@@ -17,12 +17,25 @@
                 {{ jinja_form.currency_to }}
             </div>
 
-            <div class="grid">                                                     
+            <div class="grid">                                                       
                 {{ jinja_form.amount_from.label() }}
-                {{ jinja_form.amount_from }}  
+                {{ jinja_form.amount_from }}
+                {% if jinja_form.amount_from.errors %}
+                    {% for error in jinja_form.amount_from.errors %}
+                    <p class="error">{{ error }}</p>
+                    {% endfor %}    
+                {% endif %}  
                 {{ jinja_form.calculate()}}                                         
             </div>
 
+            <div class="grid">
+                {{ jinja_form.amount_from_hidden.label() }}
+                <input type="text" 
+                    name="amount_from_hidden" 
+                    value="{{ jinja_form.amount_from_hidden.data }}"
+                    readonly>
+            </div>
+                
             <div class="grid">
                 {{ jinja_form.amount_to.label() }}
                 <input type="text" 
@@ -36,6 +49,14 @@
                     value="{{ jinja_form.unit_price.data or '' }}"
                     readonly>
             </div> 
+
+            <div class="grid">
+                {{ jinja_form.amount_to_hidden.label() }}
+                <input type="hidden" 
+                    name="amount_to_hidden" 
+                    value="{{ jinja_form.amount_to_hidden.data or '' }}"
+                    readonly>
+            </div>
 
             <div class="grid">
                 <p class="align-buttons-left">
